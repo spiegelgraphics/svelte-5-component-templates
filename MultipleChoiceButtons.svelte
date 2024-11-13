@@ -1,46 +1,60 @@
 <script>
     import { fade } from "svelte/transition";
-
+    
     /**
      * @component
-     * RadioButtons
+     * MultipleChoiceButtons
      * 
-     * A component that renders a list of radio buttons.
+     * A Svelte component that renders a list of options as buttons. 
+     * Allows for single or multiple selections.
      * 
      * @prop {Array} options - The list of options to display. Each option should be an object with `label` and `key` properties.
-     * @prop {Object} selectedOption - The currently selected option. This is a bindable property.
-     * @prop {Boolean} isSmall - If true, the radio buttons will be displayed in a column layout.
-     * @prop {String|Boolean} preselectedKey - The key of the preselected option. Defaults to false.
+     * @prop {Array} [selectedOptions=[]] - The list of currently selected options.
+     * @prop {boolean} [isSmall=false] - If true, applies a smaller style to the buttons.
+     * @prop {Array} [preselectedKeys=false] - The keys of the options that should be preselected.
+     * @prop {boolean} [multipleChoice=true] - If true, allows multiple options to be selected.
      * 
-     * @event selectOption - Fired when an option is selected. The event detail contains the selected option's key.
+     * @event selectOption - Fired when an option is selected or deselected.
      */
-    
+
     let { 
         options, 
-        selectedOption = $bindable({}),
+        selectedOptions = $bindable([]),
         isSmall,
-        preselectedKey = false
+        preselectedKeys = false,
+        multipleChoice = true,
     } = $props();
 
-    let selectedKey = $state(preselectedKey);
+    let selectedKeys = $state(preselectedKeys);
 
     const selectOption = (e) => {  
-        selectedKey = e.key;
-        selectedOption = options.find(d => d.key === selectedKey);
+        if( multipleChoice ) {
+            if( selectedKeys.includes(e.key) ) {
+                selectedKeys = selectedKeys.filter(d => d !== e.key);
+                selectedOptions = selectedOptions.filter(d => d.key !== e.key);
+            } else {
+                selectedKeys = [...selectedKeys, e.key];
+                selectedOptions = [...selectedOptions, options.find(d => d.key === e.key)];
+            }
+        } else {
+            selectedKeys = [e.key];
+            selectedOptions = [options.find(d => d.key === e.key)];
+        }
       }
 </script>
 
 
-<div class="options" class:isSmall>
+<div class="options" class:isSmall >
     
     {#each options as {label, key} }
+        {@const selected = selectedKeys.includes(key)}
         <button 
             class="option"
-            class:selected={selectedKey === key}
+            class:selected
             onclick={ () => selectOption({key}) }
             >
-            <span class="circle" class:selected={selectedKey === key}>
-                {#if selectedKey === key}                        
+            <span class="circle" class:selected>
+                {#if selected }                        
                     <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" transition:fade={{duration: 200}}>
                         <path d="M8.33331 2L3.66665 8L1.66665 5.33333" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
