@@ -3,7 +3,7 @@
     
     /**
      * @component
-     * MultipleChoiceButtons
+     * ChoiceButtons
      * 
      * A Svelte component that renders a list of options as buttons. 
      * Allows for single or multiple selections.
@@ -102,7 +102,7 @@
 
         &.selected {
             color: #fff;
-            background-color: var(--background-color, --int-font-color-link);
+            background-color: var(--background-color, var(--int-font-color-link));
         }
 
         span {
@@ -120,7 +120,7 @@
             transition: all 0.4s;
 
             &.selected {
-                border: 1px solid var(--background-color, --int-font-color-link);
+                border: 1px solid var(--background-color, var(--int-font-color-link));
                 background-color: #fff;
                 
                 svg {
@@ -128,7 +128,7 @@
                     top: 4px;
                     left: 3px;
                     path {
-                        stroke: var(--background-color, --int-font-color-link);
+                        stroke: var(--background-color, var(--int-font-color-link));
                     }
                 }
             }
