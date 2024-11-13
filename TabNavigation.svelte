@@ -1,27 +1,51 @@
 <script>
+	/**
+	 * @component
+	 * @description TabNavigation component renders a set of buttons based on the provided configuration.
+	 * @prop {Array} items - An array of configuration objects for the buttons: [{label, index, ...anyFurtherData}].
+	 * @prop {Object} currentTab - A bindable object with a default value containing the selected `activeItem`.
+	 * @example
+	 * example of items array:
+	 * ```
+	 *   const naviConfig = [
+	 *     {label: 'Tab 1', index: 0, goodToKnow: {value: 'foo'}},
+	 *     {label: 'Tab 2', index: 1},
+	 *     {label: 'Tab 3', index: 2}
+	 *   ];
+	 * ```
+	 * examples of currentTab object:
+	 * ```
+	 *   // first element shown as selected
+	 *   let currentTab = $state({ value: naviConfig[0] });
+	 *   // no preselection, no active tab
+	 *   let currentTab = $state({ value: {} });
+	 * ```
+	 * @usage
+	 * ```
+	 *   <TabNavigation items={naviConfig} bind:currentTab />
+	 * ```
+	 */
 
 	const {
-		config: items,
-		currentOption = $bindable({ value: { activeIndex: 0 } })
+		items,
+		currentTab = $bindable({value: {}})
 	} = $props();
 
 
 	const handleButtonClick = (e) => {
 		console.log('handleButtonClick', e);
-		currentOption.value = e;
+		currentTab.value = e;
 	};
-
-	// $inspect(currentOption.activeIndex);
 
 </script>
 
 
 <div class="btnBar">
 	{#each items as item}
-		{@const { label, ix } = item}
+		{@const {label, index} = item}
 		<button
 			class="btn"
-			class:active={ix === currentOption.value.ix}
+			class:active={index === currentTab.value.index}
 			onclick={() => {
 				handleButtonClick(item);
 			}}
@@ -38,8 +62,6 @@
 
 
 	.btnBar {
-
-
 		display: flex;
 		flex-wrap: wrap;
 		margin-top: 0.2rem !important;
