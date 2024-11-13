@@ -1,4 +1,23 @@
 <script module>
+  /**
+     * @component
+     * Scroller component to handle scrolling behavior with foreground and background elements.
+     *
+     * @prop {number} threshold - The threshold for triggering scroll events. Default is 0.5.
+     * @prop {string} query - The query selector for sections. Default is 'section'.
+     * @prop {number} contentHeight - The height of the content. Default is 0.
+     * @prop {number} absoluteHeight - The absolute height of the scroller. Default is 0.
+     * @prop {number} top_px - The top offset in pixels. Default is 0.
+     * @prop {string} pointerEvents - The pointer events setting. Default is 'background'.
+     * @prop {number} index - The current index of the scroller. Default is bindable.
+     * @prop {number} count - The count of items in the scroller. Default is bindable(0).
+     * @prop {number} offset - The offset value for the scroller. Default is bindable(0).
+     * @prop {number} progress - The progress value of the scroller. Default is bindable(0).
+     * @prop {boolean} fixed - Whether the scroller is fixed. Default is bindable.
+     * @prop {HTMLElement} background - The background element of the scroller.
+     * @prop {HTMLElement} foreground - The foreground element of the scroller.
+     */
+    
 	const handlers = [];
 	let manager;
 

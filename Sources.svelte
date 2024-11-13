@@ -1,4 +1,11 @@
 <script>
+  /**
+     * @component
+     * Sources component to display sources.
+     *
+     * @prop {String} sources - A string specifying the sources to be displayed.
+     */
+
 	const { sources } = $props();
 </script>
 

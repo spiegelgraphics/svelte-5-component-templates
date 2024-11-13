@@ -1,4 +1,12 @@
 <script>
+  /**
+     * @component
+     * Heading component to display a title and an optional subtitle.
+     *
+     * @prop {string} title - The main title text to be displayed. Default is an empty string.
+     * @prop {string} subtitle - The subtitle text to be displayed below the title. Default is an empty string.
+     */
+    
 	const { title = '', subtitle = '' } = $props();
 </script>
 
