@@ -16,9 +16,9 @@
 	 * examples of currentTab object:
 	 * ```
 	 *   // first element shown as selected
-	 *   let currentTab = $state({ value: naviConfig[0] });
+	 *   let currentTab = $state(naviConfig[0]);
 	 *   // no preselection, no active tab
-	 *   let currentTab = $state({ value: {} });
+	 *   let currentTab = $state({});
 	 * ```
 	 * @usage
 	 * ```
@@ -26,15 +26,13 @@
 	 * ```
 	 */
 
-	const {
+	let {
 		items,
-		currentTab = $bindable({value: {}})
+		currentTab = $bindable({})
 	} = $props();
 
-
 	const handleButtonClick = (e) => {
-		console.log('handleButtonClick', e);
-		currentTab.value = e;
+		currentTab = e;
 	};
 
 </script>
@@ -42,10 +40,10 @@
 
 <div class="btnBar">
 	{#each items as item}
-		{@const {label, index} = item}
+		{@const { label, index } = item}
 		<button
 			class="btn"
-			class:active={index === currentTab.value.index}
+			class:active={index === currentTab.index}
 			onclick={() => {
 				handleButtonClick(item);
 			}}
