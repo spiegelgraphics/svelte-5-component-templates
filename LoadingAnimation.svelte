@@ -63,6 +63,7 @@
     }
 
     .loadingAni {
+        pointer-events: none;
         justify-content: center !important;
         align-items: center !important;
     }
