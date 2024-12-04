@@ -1,6 +1,4 @@
 <script>
-	import { fade } from 'svelte/transition';
-
 	/**
 	 * @component
 	 * ChoiceButtons
@@ -11,6 +9,9 @@
 	 * Use CSS variables to customize the appearance of the buttons:
 	 *  --button-gap: 14px;
 	 * 	--button-gap-small: 4px;
+	 * 	--button-min-width: unset;
+	 * 	--button-font-size: 18px;
+	 * 	--button-font-weight: 700;
 	 * 	--button-color: var(--int-font-color-gray-base);
 	 * 	--button-bg: var(--int-color-gray-fonds);
 	 * 	--button-color-selected: #fff;
@@ -31,6 +32,9 @@
 	 * @prop {function (label: String, selected: boolean, disabled: boolean)} [optionRenderer=null] - Optional: Snippet, das den Button-Inhalt definiert.
 	 *
 	 */
+
+	import { fade } from 'svelte/transition';
+
 
 	let {
 		options,
@@ -67,7 +71,7 @@
 	<div class="option" class:selected class:disabled>
 		<span class="circle" class:selected>
 			{#if selected}
-				<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none"
+				<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 10 10" fill="none"
 				     transition:fade={{duration: 200}}>
 					<path d="M8.33331 2L3.66665 8L1.66665 5.33333" stroke-width="2.2" stroke-linecap="round"
 					      stroke-linejoin="round" />
@@ -103,7 +107,7 @@
 		display: flex;
 		position: relative;
 		height: auto;
-		border-radius: 18px;
+		border-radius: var(--button-font-size, 18px);
 		width: 100%;
 		flex-direction: row;
 		gap: var(--button-gap, 14px);
@@ -114,7 +118,7 @@
 
 		&.isSmall {
 			flex-direction: column;
-			gap: var(--button-gab-small,  4px);
+			gap: var(--button-gab-small, 4px);
 		}
 	}
 
@@ -125,16 +129,21 @@
 		cursor: pointer;
 		transition: all 0.4s;
 		color: var(--button-color, var(--int-font-color-gray-base));
-		font-weight: 700;
-		font-size: 18px;
-		border-radius: 18px;
+		font-weight: var(--button-font-weight, 700);
+		font-size: var(--button-font-size, 18px);
+		border-radius: var(--button-font-size, 18px);
 		background-color: var(--button-bg, var(--int-color-gray-fonds));
 		padding: 0 9px 0 7px;
-		min-height: 36px;
+		min-height: calc(var(--button-font-size, 18px) * 2);
+		min-width: var(--button-min-width, unset);
 
 		&.selected {
 			color: var(--button-color-selected, #fff);
 			background-color: var(--button-bg-selected, var(--int-font-color-link));
+		}
+
+		&.disabled {
+			opacity: 0.5;
 		}
 
 		span {
@@ -142,29 +151,32 @@
 		}
 
 		.circle {
-			width: 18px;
-			height: 18px;
+			width: var(--button-font-size, 18px);
+			height: var(--button-font-size, 18px);
 			border-radius: 50%;
 			background-color: var(--button-icon-bg, var(--int-background-color-default));
 			margin-right: 7px;
 			border: var(--button-icon-border-width, 1px) solid var(--button-icon-border-color, var(--button-icon-bg, var(--int-background-color-default)));
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
 			position: relative;
 			transition: all 0.4s;
 
 			&.selected {
 				border: var(--button-icon-border-width, 1px) solid var(--button-icon-border-color-selected, var(--button-icon-bg-selected, #fff));
 				background-color: var(--button-icon-bg-selected, #fff);
-
-				svg {
-					position: absolute;
-					top: 4px;
-					left: 4px;
-
-					path {
-						stroke: var(--button-icon-color-selected, var(--button-bg-selected, var(--int-font-color-link)));
-					}
-				}
 			}
+
+			svg {
+				width: 55%;
+				height: 55%;
+			}
+
+			path {
+				stroke: var(--button-icon-color-selected, var(--button-bg-selected, var(--int-font-color-link)));
+			}
+
 		}
 	}
 
