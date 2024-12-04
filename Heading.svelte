@@ -10,7 +10,7 @@
 	const { title = '', subtitle = '' } = $props();
 </script>
 
-<div class="header">
+<div class="heading">
 	{#if title}
 		<div class="title">{title}</div>
 	{/if}
@@ -22,7 +22,7 @@
 <style lang="scss">
 	@use './../scss/config';
 
-	.header {
+	.heading {
 		line-height: 1.1;
 		margin-bottom: 0.75rem;
 	}
