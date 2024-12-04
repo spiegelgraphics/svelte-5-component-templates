@@ -1,0 +1,48 @@
+{
+  "json_output": {
+    "weekDays": [
+      {
+        "key": "mo",
+        "abr_1": "M",
+        "abr_2": "Mo",
+        "name": "Montag"
+      },
+      {
+        "key": "di",
+        "abr_1": "D",
+        "abr_2": "Di",
+        "name": "Dienstag"
+      },
+      {
+        "key": "mi",
+        "abr_1": "M",
+        "abr_2": "Mi",
+        "name": "Mittwoch"
+      },
+      {
+        "key": "do",
+        "abr_1": "D",
+        "abr_2": "Do",
+        "name": "Donnerstag"
+      },
+      {
+        "key": "fr",
+        "abr_1": "F",
+        "abr_2": "Fr",
+        "name": "Freitag"
+      },
+      {
+        "key": "sa",
+        "abr_1": "S",
+        "abr_2": "Sa",
+        "name": "Samstag"
+      },
+      {
+        "key": "so",
+        "abr_1": "S",
+        "abr_2": "So",
+        "name": "Sonntag"
+      }
+    ]
+  }
+}

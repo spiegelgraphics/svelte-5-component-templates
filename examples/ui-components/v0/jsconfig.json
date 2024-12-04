@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "checkJs": false,
+    "paths":  {
+      "baseUrl": [
+        "."
+      ],
+      "svelte": [
+        "./node_modules/svelte/*"
+      ],
+      "$lib/*": [
+        "./src/lib/*"
+      ],
+      "$scss/*": [
+        "./src/scss/*"
+      ],
+      "$actions/*": [
+        "./src/actions/*"
+      ],
+      "$components/*": [
+        "./src/components/*"
+      ],
+      "$models/*": [
+        "./src/models/*"
+      ],
+      "$stores/*": [
+        "./src/stores/*"
+      ],
+      "$utils/*": [
+        "./src/utils/*"
+      ],
+      "$logs/*": [
+        "./src/logs/*"
+      ],
+      "$/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "./src/node_modules",
+    "./public/**/*"
+  ],
+  "include": [
+    "./node_modules/svelte/**/*",
+    "./src/**/*"
+  ]
+}

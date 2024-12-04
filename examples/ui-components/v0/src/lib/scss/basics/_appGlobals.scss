@@ -1,0 +1,66 @@
+@mixin appBaseColors() {
+  color-scheme: light dark;
+  color: var(--int-font-color-default);
+  background-color: var(--int-background-color-default);
+}
+
+
+@mixin appGlobals() {
+
+  :global {
+
+	* {
+	  box-sizing: border-box;
+	}
+
+	::before {
+	  box-sizing: border-box;
+	}
+
+	::after {
+	  box-sizing: border-box;
+	}
+
+	p {
+	  margin: 0;
+	}
+
+	figure {
+	  margin: 0;
+	}
+
+	hr {
+	  margin: 0;
+	}
+
+	h1 {
+	  margin: 0;
+	}
+
+	h2 {
+	  margin: 0;
+	}
+
+	h3 {
+	  margin: 0;
+	}
+
+	h4 {
+	  margin: 0;
+	}
+
+	h5 {
+	  margin: 0;
+	}
+
+	h6 {
+	  margin: 0;
+	}
+
+	blockquote {
+	  margin: 0;
+	}
+
+  }
+
+}
