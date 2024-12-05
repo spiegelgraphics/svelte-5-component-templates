@@ -9,7 +9,7 @@
 
 	const { maxHeight = 300, children } = $props();
 
-	const isApp = document.documentElement.classList.contains('is-app');
+	const isIOS = !!navigator.platform.match(/iPhone|iPod|iPad/);
 
 	let height = $state();
 	let isExpanded = $state(false);
@@ -32,7 +32,7 @@
 		<div
 			class="expandable-button-container"
 			class:is-expanded={isExpanded}
-			class:is-app={isApp}
+			class:is-ios={isIOS}
 		>
 			<button
 				class:is-expanded={isExpanded}
@@ -99,7 +99,7 @@
 				position: sticky;
 				padding: 1rem 0 1rem 0;
 
-				&.is-app {
+				&.is-ios {
 					bottom: 3rem;
 				}
 			}
