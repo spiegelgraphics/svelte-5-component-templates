@@ -14,10 +14,10 @@
 	const { headline: headlineCombined, intro } = data?.editorial?.info || {};
 	const { type: payWallType } = data?.paywall?.category || {};
 
-	const splittedCombinedHeadline = headlineCombined?.split(':') || [];
+	const [splitTopline, splitHeadline] = headlineCombined?.split(':') || [];
 
-	const topline = splittedCombinedHeadline[0] || 'Topline';
-	const headline = splittedCombinedHeadline.slice(1).join(':') || 'Headline';
+	const topline = splitHeadline? splitTopline : '';
+	const headline = splitHeadline || splitTopline || '';
 
 	const hasPaywall = payWallType && payWallType !== 'free';
 </script>
