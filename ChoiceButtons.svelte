@@ -1,138 +1,183 @@
 <script>
-    import { fade } from "svelte/transition";
-    
-    /**
-     * @component
-     * ChoiceButtons
-     * 
-     * A Svelte component that renders a list of options as buttons. 
-     * Allows for single or multiple selections.
-     * 
-     * @prop {Array} options - The list of options to display. Each option should be an object with `label` and `key` properties.
-     * @prop {Array} [selectedOptions=[]] - The list of currently selected options.
-     * @prop {boolean} [isSmall=false] - If true, applies a smaller style to the buttons.
-     * @prop {Array} [preselectedKeys=false] - The keys of the options that should be preselected.
-     * @prop {boolean} [multipleChoice=true] - If true, allows multiple options to be selected.
-     * 
-     * @event selectOption - Fired when an option is selected or deselected.
-     */
+	/**
+	 * @component
+	 * ChoiceButtons
+	 *
+	 * A Svelte component that renders a list of options as buttons.
+	 * Allows for single or multiple selections, and can render custom button content.
+	 *
+	 * Use CSS variables to customize the appearance of the buttons:
+	 *  --button-gap: 14px;
+	 * 	--button-gap-small: 4px;
+	 * 	--button-min-width: unset;
+	 * 	--button-font-size: 18px;
+	 * 	--button-font-weight: 700;
+	 * 	--button-color: var(--int-font-color-gray-base);
+	 * 	--button-bg: var(--int-color-gray-fonds);
+	 * 	--button-color-selected: #fff;
+	 * 	--button-bg-selected: var(--int-font-color-link);
+	 * 	--button-icon-color: none; // not used
+	 * 	--button-icon-bg: var(--int-background-color-default);
+	 * 	--button-icon-color-selected: var(--button-bg-selected, var(--int-font-color-link)
+	 * 	--button-icon-bg-selected: #fff;
+	 * 	--button-icon-border-color: var(--button-icon-border-color, var(--button-icon-bg, var(--int-background-color-default)));
+	 * 	--button-icon-border-color-selected: var(--button-icon-bg-selected, #fff);
+	 * 	--button-icon-border-width: 1px;
+	 *
+	 * @prop {Array} options - The list of options to display. Each option should be an object with `label` and `key` properties.
+	 * @prop {Array} [selectedOptions=$bindable([])] - The list of initially selected options.
+	 * @prop {Array} [disabledOptions=[]] - The list of disabled options.
+	 * @prop {boolean} [isSmall=false] - If true, applies a smaller style to the buttons.
+	 * @prop {boolean} [multipleChoice=true] - If true, allows multiple options to be selected.
+	 * @prop {function (label: String, selected: boolean, disabled: boolean)} [optionRenderer=null] - Optional: Snippet, das den Button-Inhalt definiert.
+	 *
+	 */
 
-    let { 
-        options, 
-        selectedOptions = $bindable([]),
-        isSmall,
-        preselectedKeys = false,
-        multipleChoice = true,
-    } = $props();
+	import { fade } from 'svelte/transition';
 
-    let selectedKeys = $state(preselectedKeys);
 
-    const selectOption = (e) => {  
-        if( multipleChoice ) {
-            if( selectedKeys.includes(e.key) ) {
-                selectedKeys = selectedKeys.filter(d => d !== e.key);
-                selectedOptions = selectedOptions.filter(d => d.key !== e.key);
-            } else {
-                selectedKeys = [...selectedKeys, e.key];
-                selectedOptions = [...selectedOptions, options.find(d => d.key === e.key)];
-            }
-        } else {
-            selectedKeys = [e.key];
-            selectedOptions = [options.find(d => d.key === e.key)];
-        }
-      }
+	let {
+		options,
+		selectedOptions = $bindable([]),
+		disabledOptions = [],
+		isSmall,
+		multipleChoice = true,
+		optionRenderer
+	} = $props();
+
+	let disabledKeys = disabledOptions.map(d => d.key);
+	let preselectedKeys = selectedOptions.map(d => d.key);
+	let selectedKeys = $state(preselectedKeys);
+
+	const selectOption = (e) => {
+		if (multipleChoice) {
+			if (selectedKeys.includes(e.key)) {
+				selectedKeys = selectedKeys.filter(d => d !== e.key);
+				selectedOptions = selectedOptions.filter(d => d.key !== e.key);
+			} else {
+				selectedKeys = [...selectedKeys, e.key];
+				selectedOptions = [...selectedOptions, options.find(d => d.key === e.key)];
+			}
+		} else {
+			selectedKeys = [e.key];
+			selectedOptions = [options.find(d => d.key === e.key)];
+		}
+	};
+
 </script>
 
 
-<div class="options" class:isSmall >
-    
-    {#each options as {label, key} }
-        {@const selected = selectedKeys.includes(key)}
-        <button 
-            class="option"
-            class:selected
-            onclick={ () => selectOption({key}) }
-            >
-            <span class="circle" class:selected>
-                {#if selected }                        
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" transition:fade={{duration: 200}}>
-                        <path d="M8.33331 2L3.66665 8L1.66665 5.33333" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                {/if}
-            </span>
-            <span>{label}</span>
-        </button>
-    {/each}
+{#snippet defaultButton(label, selected, disabled)}
+	<div class="option" class:selected class:disabled>
+		<span class="circle" class:selected>
+			{#if selected}
+				<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 10 10" fill="none"
+				     transition:fade={{duration: 200}}>
+					<path d="M8.33331 2L3.66665 8L1.66665 5.33333" stroke-width="2.2" stroke-linecap="round"
+					      stroke-linejoin="round" />
+				</svg>
+			{/if}
+		</span>
+		<span>{label}</span>
+	</div>
+{/snippet}
 
+
+<div class="options" class:isSmall>
+	{#each options as { label, key } }
+		{@const selected = selectedKeys.includes(key)}
+		{@const disabled = disabledKeys.includes(key)}
+		<button
+			class:disabled
+			onclick={disabled? null : () => selectOption({key}) }
+		>
+			{@render (optionRenderer || defaultButton)(label, selected, disabled)}
+		</button>
+	{/each}
 </div>
 
 
 <style lang="scss">
 
-    .options {
-        display: flex;
-        position: relative;
-        height: auto;
-        border-radius: 18px;
-        width: 100%;
-        flex-direction: row;
-        gap: 14px;
+	button.disabled {
+		pointer-events: none;
+	}
 
-        &.isSmall {            
-            flex-direction: column;
-            gap: 4px;
-        }
-    }
+	.options {
+		display: flex;
+		position: relative;
+		height: auto;
+		border-radius: var(--button-font-size, 18px);
+		width: 100%;
+		flex-direction: row;
+		gap: var(--button-gap, 14px);
 
+		button {
+			flex: 1;
+		}
 
-    .option {
-        flex: 1;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        cursor: pointer;
-        transition: all 0.4s;
-        color: var(--int-font-color-gray-base);
-        font-weight: 700;
-        font-size: 18px;
-        border-radius: 18px;
-        background-color: var(--int-color-gray-fonds);
-        padding-left: 7px;
-        min-height: 36px;
+		&.isSmall {
+			flex-direction: column;
+			gap: var(--button-gab-small, 4px);
+		}
+	}
 
-        &.selected {
-            color: #fff;
-            background-color: var(--background-color, var(--int-font-color-link));
-        }
+	.option {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		cursor: pointer;
+		transition: all 0.4s;
+		color: var(--button-color, var(--int-font-color-gray-base));
+		font-weight: var(--button-font-weight, 700);
+		font-size: var(--button-font-size, 18px);
+		border-radius: var(--button-font-size, 18px);
+		background-color: var(--button-bg, var(--int-color-gray-fonds));
+		padding: 0 9px 0 7px;
+		min-height: calc(var(--button-font-size, 18px) * 2);
+		min-width: var(--button-min-width, unset);
 
-        span {
-            z-index: 4;
-        }
+		&.selected {
+			color: var(--button-color-selected, #fff);
+			background-color: var(--button-bg-selected, var(--int-font-color-link));
+		}
 
-        .circle {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background-color: var(--int-background-color-default);
-            margin-right: 7px;
-            border: 1px solid var(--int-font-color-shade-base);
-            position: relative;
-            transition: all 0.4s;
+		&.disabled {
+			opacity: 0.5;
+		}
 
-            &.selected {
-                border: 1px solid var(--background-color, var(--int-font-color-link));
-                background-color: #fff;
-                
-                svg {
-                    position: absolute;
-                    top: 4px;
-                    left: 3px;
-                    path {
-                        stroke: var(--background-color, var(--int-font-color-link));
-                    }
-                }
-            }
-        }
-    }
+		span {
+			z-index: 4;
+		}
+
+		.circle {
+			width: var(--button-font-size, 18px);
+			height: var(--button-font-size, 18px);
+			border-radius: 50%;
+			background-color: var(--button-icon-bg, var(--int-background-color-default));
+			margin-right: 7px;
+			border: var(--button-icon-border-width, 1px) solid var(--button-icon-border-color, var(--button-icon-bg, var(--int-background-color-default)));
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			position: relative;
+			transition: all 0.4s;
+
+			&.selected {
+				border: var(--button-icon-border-width, 1px) solid var(--button-icon-border-color-selected, var(--button-icon-bg-selected, #fff));
+				background-color: var(--button-icon-bg-selected, #fff);
+			}
+
+			svg {
+				width: 55%;
+				height: 55%;
+			}
+
+			path {
+				stroke: var(--button-icon-color-selected, var(--button-bg-selected, var(--int-font-color-link)));
+			}
+
+		}
+	}
 
 </style>

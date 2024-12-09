@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<title><%- title %></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+	<meta name="theme-color" content="#e64415" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#D03D12" media="(prefers-color-scheme: dark)">
+	<link rel="stylesheet" href="<%- spStyles %>">
+</head>
+<body class="bg-white dark:bg-dm-shade-darkest">
+<!-- Nächste Zeile NICHT UMBRECHEN !!! - ggf. Soft-Wrap des Editors nutzen -->
+<div class="graphics-svelte-wrap" data-type="svelte-app" data-params="{&#34;title&#34;:&#34;<%- title %>&#34;,&#34;subtitle&#34;:&#34;<%- subtitle %>&#34;}" data-url="<%- dataUrl %>">
+	<css-placeholder></css-placeholder>
+	<div></div>
+	<%- injectScript %><js-placeholder></js-placeholder>
+</div>
+</body>
+</html>
