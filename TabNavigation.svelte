@@ -56,7 +56,9 @@
 
 <style lang="scss">
 
-	@use "../scss/config";
+	@use "./../scss/config";
+	@use "./../lib/scss/colors/spColors" as *;
+
 
 
 	.btnBar {
@@ -65,20 +67,20 @@
 		margin-top: 0.2rem !important;
 		margin-bottom: 0.5rem !important;
 
-		--color-enabled: #{config.$shade-darker};
-		--color-hover: #{config.$shade-darker};
+		--color-enabled: #{$shade-darker};
+		--color-hover: #{$shade-darker};
 		--color-active: var(--int-font-color-default);
-		--color-border-enabled: #{config.$shade-base};
-		--color-border--hover: #{config.$shade-dark};
+		--color-border-enabled: #{$shade-base};
+		--color-border--hover: #{$shade-dark};
 		--color-border--active: var(--int-font-color-default);
 
 		@media screen and (prefers-color-scheme: dark) {
 
-			--color-enabled: #{config.$grays-dark-base};
-			--color-hover: #{config.$grays-dark-base};
+			--color-enabled: #{$grays-dark-base};
+			--color-hover: #{$grays-dark-base};
 			--color-active: var(--int-font-color-default);
-			--color-border-enabled: #{config.$grays-dark-base};
-			--color-border-hover: #{config.$grays-dark-base};
+			--color-border-enabled: #{$grays-dark-base};
+			--color-border-hover: #{$grays-dark-base};
 			--color-border-active: var(--int-font-color-default);
 
 		}
@@ -111,7 +113,6 @@
 		cursor: default;
 		pointer-events: none;
 		color: var(--color-active);
-		border-color: var(--color-border-active);
-		border-bottom-width: 1px;
+		border-bottom: 1px solid var(--color-border-active);
 	}
 </style>
