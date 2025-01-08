@@ -1,5 +1,16 @@
 <script>
-    import { onMount } from "svelte";
+    /**
+     * @component
+     * GroupedChoiceButtons
+     * 
+     * A component that renders a group of choice buttons with a highlight indicating the selected option.
+     * 
+     * @prop {Array} options - The list of options to display. Each option should be an object with `label` and `key` properties.
+     * @prop {Object} selectedOption - The currently selected option. This is a bindable property.
+     * @prop {String} preselectedKey - The key of the preselected option.
+     * 
+     * @event selectOption - Fired when an option is selected. The event detail contains the selected option's key.
+     */
 
     let {
         options, 
