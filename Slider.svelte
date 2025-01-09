@@ -138,13 +138,6 @@
         white-space: nowrap;
     }
 
-    .headline {
-		font-size: config.$font-size-m;
-        color: var(--int-font-color-default);
-        margin-bottom: 0.5rem;
-        @include config.fontFamily(config.$spSansBold); 
-    }
-
     input[type="range"] {
         appearance: none;
         background: transparent;
