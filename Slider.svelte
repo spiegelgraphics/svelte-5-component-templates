@@ -45,7 +45,7 @@
         <div class="value"
             style:left={ barWidth <= 50 ? "calc(var(--barWidth) + 40px)" : ""}
             style:right={ barWidth > 50 ? "calc(100% - var(--barWidth) + 40px)" : ""}
-            style:color={ barWidth < 50 ? "var(--int-font-color-link)" : "var(--int-background-color-default)"}
+            style:color={ barWidth < 50 ? "var(--int-font-color-link)" : "white"}
         >
             {value}&thinsp;{unit}
         </div>
@@ -111,7 +111,7 @@
             .thumb{
                 width: 14px;
                 height: 14px;
-                background-color: var(--int-background-color-default);
+                background-color: white;
                 border-radius: 50%;
                 position: relative;
                 left: calc(var(--barWidth) - 7px);
