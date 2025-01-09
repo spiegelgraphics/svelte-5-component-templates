@@ -25,8 +25,11 @@
 
     const selectOption = (e) => {  
         selectedKey = e.key;
-        selectedOption = options.find(d => d.key === e.key);
     };
+
+    $effect(() => {
+        selectedOption = options.find(d => d.key === selectedKey);
+    });
 
 </script>
 
