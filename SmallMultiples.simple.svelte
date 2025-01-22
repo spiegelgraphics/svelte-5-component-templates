@@ -15,7 +15,7 @@
 
 <div class="content">
 
-    <div class="container">
+    <div class="conti">
         <Grid --column-min-width="{columnMinWidth}px">
             {#each dataWrapperIds as id, i}
                 {#if i < visibleItems }
@@ -44,6 +44,11 @@
   .btn {
     margin: 20px auto 0;
   }
+.conti{
+    display: block;
+    width: 100%;
+  }
+
 
 </style>
 
