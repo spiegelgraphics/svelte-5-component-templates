@@ -23,20 +23,21 @@
 	@use './../scss/config';
 
 	.heading {
-		line-height: 1.1;
 		margin-bottom: 0.75rem;
 	}
 
 	.title {
 		@include config.fontFamily(config.$spSlab);
 		font-size: 1.5rem;
-		padding-bottom: 0.0625rem;
+		line-height: 1.1;
 		@media screen and (max-width: 488px) {
 			font-size: 1.25rem;
 		}
 	}
 
 	.subtitle {
+		padding-top: 0.375rem;
 		font-size: 1rem;
+		line-height: 1.2;
 	}
 </style>
