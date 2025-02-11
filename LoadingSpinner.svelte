@@ -1,4 +1,14 @@
 <script>
+	/**
+	 * @component
+	 * @name LoadingSpinner
+	 * @description A loading spinner component with customizable height.
+	 * @example
+	 * <LoadingSpinner height={500} />
+	 *
+	 * @prop {number} height - Height of the loading spinner box with the spinner element vertically centred.
+	 *    Default: 333. Minimum height: 140, which corresponds to the height of the spinner.
+	 */
 	let { height = 333 } = $props();
 	height = Math.max(height, 140);
 </script>
