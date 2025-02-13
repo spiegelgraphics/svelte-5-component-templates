@@ -6,15 +6,24 @@
      * @prop {number} maxHeight - The maximum height of the content before it becomes expandable. Default is 300.
      * @prop {snippet} children - Snippet to render child components or content. Uses the default slot.
      */
-
+    
 	const { maxHeight = 300, children } = $props();
 
 	const isIOS = !!navigator.platform.match(/iPhone|iPod|iPad/);
+
+	let element;
 
 	let height = $state();
 	let isExpanded = $state(false);
 
 	let isExpandable = $derived(height && height > maxHeight);
+
+	function handleClick() {
+		isExpanded = !isExpanded;
+		if (!isExpanded) {
+			element.scrollIntoView({ behavior: 'instant' });
+		}
+	}
 </script>
 
 <div
@@ -23,6 +32,7 @@
 	class:is-expanded={isExpanded}
 	style:--max-height="{maxHeight}px"
 	bind:clientHeight={height}
+	bind:this={element}
 >
 	{@render children?.()}
 	{#if isExpandable}
@@ -36,9 +46,7 @@
 		>
 			<button
 				class:is-expanded={isExpanded}
-				onclick={() => {
-					isExpanded = !isExpanded;
-				}}
+				onclick={handleClick}
 				><span>{isExpanded ? 'Weniger anzeigen' : 'Mehr anzeigen'}</span><svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="13"
@@ -63,6 +71,7 @@
 <style lang="scss">
 	.expandable {
 		position: relative;
+		scroll-margin-top: 5rem;
 
 		&.is-expandable {
 			max-height: calc(var(--max-height) + 1rem);
