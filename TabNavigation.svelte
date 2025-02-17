@@ -14,7 +14,7 @@
 	 * Dependencies: actions/dragscrollable.js and _ui.css-vars.scss
 	 */
 
-	import { dragscrollable } from '$actions/dragscrollable.js';
+	import { dragscrollable, isTouchDevice } from '$actions/dragscrollable.js';
 	import { onMount } from 'svelte';
 
 
@@ -138,7 +138,9 @@
 				cursor: false,
 				dragging: () => {
 					setAvailableScrollSpace();
-					elementClickable = false;
+					// Prevent click event while dragging on non-touch devices only;
+					// touch devices don't need this, and the reset to clickable wouldn't work properly.
+					elementClickable = isTouchDevice;
 				},
 				draggingEnd: () => {
 					window.setTimeout(() => {
