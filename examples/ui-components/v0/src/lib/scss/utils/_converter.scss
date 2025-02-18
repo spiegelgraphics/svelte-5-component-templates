@@ -1,6 +1,0 @@
-@use "sass:math";
-
-@function rem($value, $context: 16) {
-  // in klammern vor "geteilt durch 16": strip unit
-  @return math.div(math.div($value, $value * 0 + 1), $context) + rem;
-}
