@@ -4,14 +4,18 @@
 	 * @name TabNavigation
 	 * @description A tab navigation component allowing horizontal scrolling and tab selection.
 	 * @example
-	 * <TabNavigation title="My Tabs" tabs={[{name: 'Tab 1', detail: {x: 0}}, {name: 'Tab 2'}]} indexStartTab={0} />
+	 * <TabNavigation title="My Tabs" tabs={[{name: 'Tab 1', detail: {x: 0}}, {name: 'Tab 2'}]} indexStartTab={0} bind:selectedTab={myStateVar} />
 	 *
 	 * @prop {string} title - The (optional) title of the tab navigation.
 	 * @prop {Array} tabs - An array of tab objects. Each object should have a `name` or `label` property.
 	 * @prop {number} indexStartTab - The index of the initially selected tab.
 	 * @prop {Object} selectedTab - Selected tab object from tabs Array. Default: bindable().
 	 *
-	 * Dependencies: actions/dragscrollable.js and _ui.css-vars.scss
+	 * @cssvar {color} --duv-ui-graphic-dark — The color of the tab border
+	 * @cssvar {color} --duv-ui-text-default — The color of the tab text
+	 * @cssvar {color} --duv-ui-text-disabled — The color of the tab text when disabled
+	 *
+	 * Dependencies: actions/dragscrollable.js and _ui.css-vars.scss (lib/scss/colors/)
 	 */
 
 	import { dragscrollable, isTouchDevice } from '$actions/dragscrollable.js';
@@ -25,13 +29,15 @@
 		selectedTab = $bindable()
 	} = $props();
 
+	let idTimeoutDragEnd;
+
 	const borderPadding = {
 		vertical: 0,
 		horizontal: 4
 	};
 
 	const tabNaviData = tabs.map((item, index) => {
-		const label = item.label || item.name || (typeof item === 'string' ? item : 'Tab ' + index)
+		const label = item.label || item.name || (typeof item === 'string' ? item : 'Tab ' + index);
 		return {
 			__id: 'tab-navi-' + (Date.now() + label.length) + '-' + Math.round(Math.random() * 100000) + '-' + index,
 			...item,
@@ -47,9 +53,12 @@
 	let elementClickable = $state(true);
 
 	let scrollLeft = $state(0);
+	const showFadeLeft = $derived(scrollLeft > 4);
 	const scrollRight = $derived(tabList.scrollWidth - tabList.clientWidth - scrollLeft);
-	const showFadeLeft = $derived(Math.floor(scrollLeft) > 1);
 	const showFadeRight = $derived(Math.floor(scrollRight) > 1);
+	// const showFadeRight = $derived(tabList.scrollWidth - scrollLeft <= tabList.clientWidth);
+
+
 	const activeLabelWidth = $derived.by(() => {
 		if (
 			!tabNaviData ||
@@ -71,7 +80,7 @@
 
 	const setAvailableScrollSpace = () => {
 		// scrollLeft setzen; update für scrollRight und showFadeLeft/Right via $derived
-		scrollLeft = tabList.scrollLeft > 1 ? tabList.scrollLeft : 0;
+		scrollLeft = tabList.scrollLeft > 9 ? tabList.scrollLeft : 0;
 	};
 
 	const centerActiveTab = (activeTabId) => {
@@ -100,10 +109,20 @@
 			if (isLastTabActive) {
 				setTimeout(() => {
 					tabList.scrollTo({
-						left: tabListScrollWidth - 1, // -1 to prevent to cut the right-hand frame line
+						left: tabListScrollWidth - activeTabWidth - 10, // -1 to prevent to cut the right-hand frame line
 						behavior: 'smooth'
 					});
 				}, 299);
+			} else {
+				const isFirstTabActive = activeTabElement.classList.contains('first');
+				if (isFirstTabActive) {
+					setTimeout(() => {
+						tabList.scrollTo({
+							left: -1,
+							behavior: 'smooth'
+						});
+					}, 299);
+				}
 			}
 
 		}
@@ -111,6 +130,7 @@
 
 	onMount(() => {
 		setAvailableScrollSpace();
+		centerActiveTab(selectedTab.__id);
 	});
 
 </script>
@@ -138,15 +158,17 @@
 				cursor: false,
 				dragging: () => {
 					setAvailableScrollSpace();
-					// Prevent click event while dragging on non-touch devices only;
+					// prevent click event while dragging on non-touch devices only
 					// touch devices don't need this, and the reset to clickable wouldn't work properly.
 					elementClickable = isTouchDevice;
 				},
 				draggingEnd: () => {
-					window.setTimeout(() => {
+					setAvailableScrollSpace();
+					clearTimeout(idTimeoutDragEnd);
+					idTimeoutDragEnd = window.setTimeout(() => {
 						setAvailableScrollSpace();
 						elementClickable = true;
-					}, 303);
+					}, 650);
 				}
 			}}
 		>
@@ -156,7 +178,7 @@
 						type="radio"
 						id={item.__id}
 						checked={item.index === selectedTab.index}
-						onchange={() => {
+						onclick={() => { // war: onchange → halb weggeschobene aktive tabs können nicht durch Klick zentriert werden
 							selectedTab = item;
 							centerActiveTab(item.__id);
 						}}
@@ -203,7 +225,7 @@
 
 	$lineHeightTitle: 1.1;
 	$lineHeightTabs: 1.26;
-	$tabPadding: 0.06125rem 0.5rem;
+	$tabPadding: 0.06125rem 0.75rem 0.12375rem; // 0.625rem;
 	$tabMinWidth: 2.5rem;
 
 	.tab-navigation {
@@ -219,6 +241,7 @@
 	.tabs-bar {
 		position: relative;
 		overflow: hidden;
+		box-sizing: border-box;
 	}
 
 	.tabs-switch {
@@ -252,17 +275,17 @@
 
 		&::before {
 			position: absolute;
-			top: calc(-1 * var(--border-padding-vertical) + 1px);
+			box-sizing: border-box;
+			top: calc(-1 * var(--border-padding-vertical) + 2px);
 			right: calc(-1 * var(--border-padding-horizontal));
-			bottom: calc(-1 * var(--border-padding-vertical));
-			left: calc(-1 * var(--border-padding-horizontal));
+			bottom: calc(-1 * var(--border-padding-vertical) - 0.2px) ;
+			left: calc(-1 * var(--border-padding-horizontal) + 2px);
 			display: block;
-			width: var(--active-label-width, 20px);
-			border: 1px solid var(--duv-ui-graphic-dark);
+			width: calc(var(--active-label-width, 20px) - var(--border-padding-horizontal) - 1px);
+			border: 1px solid var(--duv-ui-graphic-dark, var(--int-font-color-default));
 			border-radius: 3px;
 			transform: translateX(var(--translate-x, 0));
 			transition: transform 0.3s, width 0.3s;
-			box-sizing: border-box;
 			pointer-events: none;
 			content: '';
 		}
@@ -308,9 +331,13 @@
 			color: var(--duv-ui-text-default);
 		}
 
-		&:hover {
-			color: var(--duv-ui-text-default);
+		// avoid faulty hover version on touch devices
+		@media (any-hover: hover) {
+			&:hover {
+				color: var(--duv-ui-text-default);
+			}
 		}
+
 	}
 
 	.separator {
