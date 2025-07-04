@@ -21,7 +21,6 @@
 	import { dragscrollable, isTouchDevice } from '$actions/dragscrollable.js';
 	import { onMount } from 'svelte';
 
-
 	let {
 		title = '',
 		tabs,
@@ -40,7 +39,13 @@
 	const tabNaviData = tabs.map((item, index) => {
 		const label = item.label || item.name || (typeof item === 'string' ? item : 'Tab ' + index);
 		return {
-			__id: 'tab-navi-' + (Date.now() + label.length) + '-' + Math.round(Math.random() * 100000) + '-' + index,
+			__id:
+				'tab-navi-' +
+				(Date.now() + label.length) +
+				'-' +
+				Math.round(Math.random() * 100000) +
+				'-' +
+				index,
 			...item,
 			label,
 			index
@@ -59,13 +64,8 @@
 	const showFadeRight = $derived(Math.floor(scrollRight) > 1);
 	// const showFadeRight = $derived(tabList.scrollWidth - scrollLeft <= tabList.clientWidth);
 
-
 	const activeLabelWidth = $derived.by(() => {
-		if (
-			!tabNaviData ||
-			labelWidths.length !== tabNaviData.length
-		)
-			return;
+		if (!tabNaviData || labelWidths.length !== tabNaviData.length) return;
 		return labelWidths[selectedTab.index];
 	});
 
@@ -74,9 +74,7 @@
 		const totalWidth = labelWidths
 			.slice(0, selectedTab.index)
 			.reduce((acc, cur) => acc + cur, 0);
-		return (
-			totalWidth + selectedTab.index * borderPadding.horizontal * 2
-		);
+		return totalWidth + selectedTab.index * borderPadding.horizontal * 2;
 	});
 
 	const setAvailableScrollSpace = () => {
@@ -85,7 +83,6 @@
 	};
 
 	const centerActiveTab = (activeTabId) => {
-
 		// console.log('%c activeTab-ID ', 'background:red;color:white', activeTabId);
 		const activeTabElement = tabList?.querySelector(`li[data-aid="${activeTabId}"]`);
 
@@ -97,7 +94,8 @@
 			const activeTabCenter = activeTabLeft + activeTabWidth / 2;
 			const scrollPosition = activeTabCenter - tabListWidth / 2;
 			const maxScrollLeft = tabListScrollWidth - tabListWidth;
-			scrollLeft = selectedTab.index === 0 ? 0 : Math.max(0, Math.min(scrollPosition, maxScrollLeft));
+			scrollLeft =
+				selectedTab.index === 0 ? 0 : Math.max(0, Math.min(scrollPosition, maxScrollLeft));
 
 			tabList.scrollTo({
 				left: Math.max(0, Math.min(scrollPosition, scrollLeft)),
@@ -125,7 +123,6 @@
 					}, 299);
 				}
 			}
-
 		}
 	};
 
@@ -133,22 +130,25 @@
 		setAvailableScrollSpace();
 		centerActiveTab(selectedTab.__id);
 	});
-
 </script>
 
 <div class="tab-navigation">
-
 	{#if title}
 		<div class="title">{title}</div>
 	{/if}
 
 	<div class="tabs-bar">
-
 		{#if showFadeRight}
-			<div class="fade right" class:card-layout={useCardLayout}></div>
+			<div
+				class="fade right"
+				class:card-layout={useCardLayout}
+			></div>
 		{/if}
-		{#if showFadeLeft }
-			<div class="fade left" class:card-layout={useCardLayout}></div>
+		{#if showFadeLeft}
+			<div
+				class="fade left"
+				class:card-layout={useCardLayout}
+			></div>
 		{/if}
 
 		<div
@@ -174,12 +174,13 @@
 			}}
 		>
 			<div class="inputs">
-				{#each tabNaviData as item}
+				{#each tabNaviData as item (item.__id)}
 					<input
 						type="radio"
 						id={item.__id}
 						checked={item.index === selectedTab.index}
-						onclick={() => { // war: onchange → halb weggeschobene aktive tabs können nicht durch Klick zentriert werden
+						onclick={() => {
+							// war: onchange → halb weggeschobene aktive tabs können nicht durch Klick zentriert werden
 							selectedTab = item;
 							centerActiveTab(item.__id);
 						}}
@@ -195,7 +196,7 @@
 				style:--translate-x="{translateX}px"
 				style:pointer-events={elementClickable ? 'auto' : 'none'}
 			>
-				{#each tabNaviData as { __id, index, label }}
+				{#each tabNaviData as { __id, index, label } (index)}
 					<li
 						data-aid={__id}
 						class:first={index === 0}
@@ -215,14 +216,11 @@
 				{/each}
 			</ul>
 		</div>
-
 	</div>
-
 </div>
 
-
 <style lang="scss">
-	@use "./../scss/config" as config;
+	@use './../scss/config' as config;
 
 	$lineHeightTitle: 1.1;
 	$lineHeightTabs: 1.26;
@@ -279,14 +277,16 @@
 			box-sizing: border-box;
 			top: calc(-1 * var(--border-padding-vertical) + 2px);
 			right: calc(-1 * var(--border-padding-horizontal));
-			bottom: calc(-1 * var(--border-padding-vertical) - 0.2px) ;
+			bottom: calc(-1 * var(--border-padding-vertical) - 0.2px);
 			left: calc(-1 * var(--border-padding-horizontal) + 2px);
 			display: block;
 			width: calc(var(--active-label-width, 20px) - var(--border-padding-horizontal) - 1px);
 			border: 1px solid var(--duv-ui-graphic-dark, var(--int-font-color-default));
 			border-radius: 3px;
 			transform: translateX(var(--translate-x, 0));
-			transition: transform 0.3s, width 0.3s;
+			transition:
+				transform 0.3s,
+				width 0.3s;
 			pointer-events: none;
 			content: '';
 		}
@@ -306,7 +306,6 @@
 	}
 
 	label {
-
 		text-align: center;
 		text-underline-position: from-font;
 		text-decoration-skip-ink: none;
@@ -338,7 +337,6 @@
 				color: var(--duv-ui-text-default);
 			}
 		}
-
 	}
 
 	.separator {
@@ -351,7 +349,6 @@
 	}
 
 	.fade {
-
 		--duv-ui-tabnavi-fade-start: rgba(255, 255, 255, 0);
 		--duv-ui-tabnavi-fade-end: rgba(255, 255, 255, 1);
 		@media (prefers-color-scheme: dark) {
@@ -378,15 +375,21 @@
 		&.right {
 			left: unset;
 			right: 0;
-			background: linear-gradient(to right, var(--duv-ui-tabnavi-fade-start), var(--duv-ui-tabnavi-fade-end));
+			background: linear-gradient(
+				to right,
+				var(--duv-ui-tabnavi-fade-start),
+				var(--duv-ui-tabnavi-fade-end)
+			);
 		}
 
 		&.left {
 			left: 0;
 			right: unset;
-			background: linear-gradient(to left, var(--duv-ui-tabnavi-fade-start), var(--duv-ui-tabnavi-fade-end));
+			background: linear-gradient(
+				to left,
+				var(--duv-ui-tabnavi-fade-start),
+				var(--duv-ui-tabnavi-fade-end)
+			);
 		}
-
 	}
-
 </style>
