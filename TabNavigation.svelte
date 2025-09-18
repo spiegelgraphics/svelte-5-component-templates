@@ -14,6 +14,11 @@
 	 * @cssvar {color} --duv-ui-graphic-dark — The color of the tab border
 	 * @cssvar {color} --duv-ui-text-default — The color of the tab text
 	 * @cssvar {color} --duv-ui-text-disabled — The color of the tab text when disabled
+	 * @cssvar {padding} --duv-ui-tabNav-box-padding - Padding of the whole tab navigation element (default: 0.75rem 0)
+	 * @cssvar {fontWeight} --duv-tabNav-title-font-weight — The font weight of the title (default: 700)
+	 * @cssvar {color} --duv-ui-tabNav-fade-color - color of the tab navigation fade (right / left)
+	 * @cssvar {pixel} --duv-ui-tabNav-fade-width - Width of the tab navigation fade (right / left)
+	 * @cssvar {pixel} --duv-ui-tabNav-fade-height - Height of the tab navigation fade (right / left)
 	 *
 	 * Dependencies: actions/dragscrollable.js and _ui.css-vars.scss (lib/scss/colors/)
 	 */
@@ -228,11 +233,11 @@
 	$tabMinWidth: 2.5rem;
 
 	.tab-navigation {
-		padding: 0.75rem 0;
+		padding: var(--duv-ui-tabNav-box-padding, 0.75rem 0);
 	}
 
 	.title {
-		font-weight: 700;
+		font-weight: var(--duv-tabNav-title-font-weight, 700);
 		line-height: $lineHeightTitle;
 		padding-bottom: 0.4375rem;
 	}
@@ -349,12 +354,9 @@
 	}
 
 	.fade {
-		--duv-ui-tabnavi-fade-start: rgba(255, 255, 255, 0);
-		--duv-ui-tabnavi-fade-end: rgba(255, 255, 255, 1);
-		@media (prefers-color-scheme: dark) {
-			--duv-ui-tabnavi-fade-start: rgba(31, 30, 28, 0);
-			--duv-ui-tabnavi-fade-end: rgba(31, 30, 28, 1);
-		}
+
+		--duv-ui-tabnavi-fade-start: rgb(from var(--duv-ui-tabNav-fade-color, var(--int-background-color-default)) r g b / 0%);
+		--duv-ui-tabnavi-fade-end: rgb(from var(--duv-ui-tabNav-fade-color, var(--int-background-color-default)) r g b / 100%);
 
 		&.card-layout {
 			@media (prefers-color-scheme: dark) {
@@ -365,10 +367,10 @@
 
 		& {
 			position: absolute;
-			z-index: 19;
+			z-index: 18;
 			top: 0;
-			width: 20px;
-			height: 29px;
+			width: var(--duv-ui-tabNav-fade-width, 20px);
+			height: var(--duv-ui-tabNav-fade-width, 29px);
 			pointer-events: none;
 		}
 
@@ -376,9 +378,9 @@
 			left: unset;
 			right: 0;
 			background: linear-gradient(
-				to right,
-				var(--duv-ui-tabnavi-fade-start),
-				var(--duv-ui-tabnavi-fade-end)
+					to right,
+					var(--duv-ui-tabnavi-fade-start),
+					var(--duv-ui-tabnavi-fade-end)
 			);
 		}
 
@@ -386,9 +388,9 @@
 			left: 0;
 			right: unset;
 			background: linear-gradient(
-				to left,
-				var(--duv-ui-tabnavi-fade-start),
-				var(--duv-ui-tabnavi-fade-end)
+					to left,
+					var(--duv-ui-tabnavi-fade-start),
+					var(--duv-ui-tabnavi-fade-end)
 			);
 		}
 	}
