@@ -1,0 +1,127 @@
+<script>
+    /**
+     * @component
+     * @name Paywall
+     * @description
+     * A paywall wrapper component that overlays its children with a paywall UI
+     * and visually blurs the underlying content.
+     *
+     * @example
+     * <Paywall>
+     *   <Content />
+     * </Paywall>
+     *
+     * @prop {Snippet} children
+     *   The content that should be wrapped by the paywall. This content is visually blurred
+     *   and blocked from interaction while the paywall overlay is shown.
+     */
+
+    let {children} = $props();
+
+    const currentURL = encodeURIComponent(window.location.href);
+
+    const triggerAboShop = (e) => {
+        if (window.navigator.webBridge?.triggerOffer) {
+            e.preventDefault();
+            window.navigator.webBridge.triggerOffer({product: 'Spplus', targetUrl: currentURL});
+        }
+    }
+
+    const triggerLogin = (e) => {
+        if (window.navigator.webBridge?.triggerLogin) {
+            e.preventDefault();
+            window.navigator.webBridge.triggerLogin();
+        }
+    }
+</script>
+
+<div class="paywall-wrapper">
+    <div class="paywall-content">
+        {@render children?.()}
+    </div>
+    <div class="paywall">
+        <div class="paywall-alert">
+            <div style="position: relative;">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0.960938" y="-0.00109863" width="36.0022" height="36.0022" rx="1.5"
+                          fill="currentColor"></rect>
+                    <path d="M18.9628 25.1884V16.1274H11.7758V12.0198H15.3625V14.5568H18.9628V10.9325C18.9628 9.77264 17.8867 8.99945 16.8026 8.99945H10.0894C9.0053 8.99945 8.16211 9.84514 8.16211 10.9325V19.1477H15.3445V24.101H11.6553V20.7183H8.16211V25.0675C8.16211 26.1549 9.0053 27.0005 10.0894 27.0005H16.9106C18.0192 27.0005 18.9628 26.2757 18.9628 25.1884Z"
+                          fill="white"></path>
+                    <path d="M25.9377 14.3998H28.1878V17.775H31.563V20.0251H28.1878V23.4003H25.9377V20.0251H22.5625V17.775H25.9377V14.3998Z"
+                          fill="white"></path>
+                </svg>
+                <br/>
+                <strong>Exklusiver Inhalt</strong><br/>
+                für Abonnenten
+                <div class="splus-links">
+                    <button class="splus-aboshop" onclick={triggerAboShop}>Abonnieren</button>
+                    oder
+                    <a onclick={triggerLogin}
+                       href="https://gruppenkonto.spiegel.de/anmelden.html?requestAccessToken=true&targetUrl={currentURL}">einloggen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+
+  .paywall-wrapper {
+    position: relative;
+  }
+
+  .paywall-content {
+    filter: blur(2px);
+    pointer-events: none;
+  }
+
+  .paywall {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    background: linear-gradient(to top, var(--int-background-color-default) 10%, transparent 90%);
+
+    .paywall-alert {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      padding: 16px;
+      background: var(--int-background-color-default-rgba-halftransparent);
+      backdrop-filter: brightness(96%) blur(20px);
+      -webkit-backdrop-filter: brightness(96%) blur(20px);
+      color: var(--int-text-color-default);
+      font-size: 1rem;
+      box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.15);
+      border-radius: .5rem;
+
+      svg {
+        position: absolute;
+        top: -40%;
+        left: 50%;
+        transform: translate(-50%, 0);
+
+        rect {
+          fill: var(--int-font-color-link);
+        }
+
+        path {
+          fill: #FFF;
+        }
+      }
+
+      .splus-links {
+        margin-top: .25rem;
+        font-size: .875rem;
+
+        button, a {
+          background: transparent;
+          border: 0;
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+</style>
