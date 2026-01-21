@@ -7,7 +7,7 @@
    * and visually blurs the underlying content.
    *
    * @example
-   * <Paywall>
+   * <Paywall enabled={!subscriptionCookie.isOpen}>
    *   <Content />
    * </Paywall>
    *
@@ -23,7 +23,7 @@
    * In a typical setup, this value is derived from the user's subscription or login state,
    * for example:
    *
-   * enabled={!subscriptionCookie.isOpen}
+   * enabled={!subscriptionCookie.isOpen} // to be copied from here: https://github.com/spiegelgraphics/svelte-5-utilities/blob/main/subscriptionCookie.js
    */
 
     let {children, enabled = false} = $props();
