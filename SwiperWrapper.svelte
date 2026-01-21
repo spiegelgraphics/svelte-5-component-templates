@@ -117,7 +117,8 @@
         <!-- svelte-ignore slot_element_deprecated -->
         <swiper-slide
             class:focused={activeIndex === i}
-            style:padding-bottom={"3px"}
+            style:padding-bottom={"1rem"}
+			style:padding-top={"1rem"}
             onclick={() => {
                 clickedIndex = i;
             }}
