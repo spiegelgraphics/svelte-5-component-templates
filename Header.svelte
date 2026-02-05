@@ -6,11 +6,10 @@
 	 *
 	 * @prop {boolean} hideTopline - Indicates if the topline should be hidden. Default is false.
 	 * @prop {boolean} hideIntro - Indicates if the intro/teaser text should be hidden. Default is false.
-	 * @prop {string} intro - The intro/teaser text to display below the headline.
 	 * @prop {boolean} isOverlay - Indicates if the header should be styled as an overlay (with text shadow and white color). Default is false.
 	 */
 
-	const { hideTopline = false, hideIntro = false, intro, isOverlay = false} = $props();
+	const { hideTopline = false, hideIntro = false, isOverlay = false} = $props();
 
 	const splitHeadline = (headline_raw) => {
 		const rxSplitHeadline = /^(?:(.+?):\s)?(.+)$/g;
@@ -26,7 +25,7 @@
 	const { editorial = {}, paywall: { category: { type: payWallType = '' } = {} } = {} } =
 		allSettings;
 
-	const { info: { headline: headline_raw = '' } = {} } = editorial;
+	const { info: { headline: headline_raw = '', intro = '' } = {} } = editorial;
 
 	const [topLine = '', headline = ''] = splitHeadline(headline_raw);
 	
@@ -45,26 +44,13 @@
 						<svg
 							width="20"
 							height="20"
-							viewBox="0 0 20 20"
+							viewBox="0 0 16 16"
 							xmlns="http://www.w3.org/2000/svg"
 							role="img"
 							aria-hidden="true"
 						>
-							<g>
-								<rect
-									width="20"
-									height="20"
-									rx="1.5"
-								></rect>
-								<path
-									fill-rule="evenodd"
-									clip-rule="evenodd"
-									d="M4 10.684V6.295C4 5.575 4.36 5 5.295 5h3.669c.648 0 1.08.432 1.08 1.151v1.943H8.172v-1.44H5.799v2.303h4.244v4.82c0 .791-.431 1.223-1.295 1.223H5.223C4.36 15 4 14.496 4 13.849v-2.302h1.87v1.798h2.375v-2.662H4z"
-								></path>
-								<path
-									d="M13.825 7.8h1.35v2.025H17.2v1.35h-2.025V13.2h-1.35v-2.025H11.8v-1.35h2.025V7.8z"
-								></path>
-							</g>
+							<rect width="16" height="16" rx="1.5" fill="#E64415"/>
+							<path d="M7 4H9V7.00001H12V9.00001H9V12H7V9.00001H4V7.00001H7V4Z" fill="white"/>
 						</svg>
 					</span>
 				</span>
