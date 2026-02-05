@@ -54,15 +54,9 @@
         <div class="paywall">
             <div class="paywall-alert">
                 <div style="position: relative;">
-                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0.960938" y="-0.00109863" width="36.0022" height="36.0022" rx="1.5"
-                              fill="currentColor"></rect>
-                        <path
-                                d="M18.9628 25.1884V16.1274H11.7758V12.0198H15.3625V14.5568H18.9628V10.9325C18.9628 9.77264 17.8867 8.99945 16.8026 8.99945H10.0894C9.0053 8.99945 8.16211 9.84514 8.16211 10.9325V19.1477H15.3445V24.101H11.6553V20.7183H8.16211V25.0675C8.16211 26.1549 9.0053 27.0005 10.0894 27.0005H16.9106C18.0192 27.0005 18.9628 26.2757 18.9628 25.1884Z"
-                                fill="white"></path>
-                        <path
-                                d="M25.9377 14.3998H28.1878V17.775H31.563V20.0251H28.1878V23.4003H25.9377V20.0251H22.5625V17.775H25.9377V14.3998Z"
-                                fill="white"></path>
+                    <svg width="36" height="36" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="16" height="16" rx="1.5" fill="var(--int-font-color-link)"/>
+                        <path d="M7 4H9V7.00001H12V9.00001H9V12H7V9.00001H4V7.00001H7V4Z" fill="white"/>
                     </svg>
                     <br/>
                     <strong>Exklusiver Inhalt</strong><br/>
