@@ -438,34 +438,23 @@
     }
 
     @keyframes slideHintBoth {
-        0%, 100% {
-            left: var(--barWidth);
-            opacity: 0;
-        }
-        10% {
-            opacity: 1;
-        }
-        30% {
-            left: calc(var(--barWidth) - 1.5%);
-            opacity: 1;
-        }
-        40% {
-            opacity: 0;
-        }
-        50% {
-            left: var(--barWidth);
-            opacity: 0;
-        }
-        60% {
-            opacity: 1;
-        }
-        80% {
-            left: calc(var(--barWidth) + 1.5%);
-            opacity: 1;
-        }
-        90% {
-            opacity: 0;
-        }
+      0%,
+      100% {
+        left: var(--barWidth);
+        opacity: 1;
+      }
+      30% {
+        left: calc(var(--barWidth) - 12px);
+        opacity: 0.5;
+      }
+      50% {
+        left: var(--barWidth);
+        opacity: 1;
+      }
+      70% {
+        left: calc(var(--barWidth) + 16px);
+        opacity: 0.75;
+      }
     }
     </style>
     
