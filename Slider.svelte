@@ -155,11 +155,32 @@
     input[type="range"] {
         position: absolute;
         width: calc(100% - 36px);
-        height: 36px;
+        height: 20px;
         appearance: none;
         background: transparent;
         opacity: 0;
         z-index: 30;
+        cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: transparent;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: transparent;
+        opacity: 0;
+        border: none;
+        cursor: pointer;
     }
     
     .headline {
