@@ -76,7 +76,7 @@
 	></div>
 
 
-<div class="polygon-view-height"	
+<div class="duv-polygon-view-height"	
 	bind:clientHeight={env.polygonContainerHeight}
 	style="height: calc( 100vh - 0px  	
 	- var(--polygon-navigation-height, 0px) 
@@ -86,51 +86,51 @@
 	></div>
 
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonAppCollapsibleHeaderHeight} 
 	style="height: calc(var(--polygon-app-collapsible-header-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonAppBottombarHeight} 
 	style="height: calc(var(--polygon-app-bottombar-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonAudioplayerHeight} 
 	style="height: calc(var(--polygon-audioplayer-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonFeaturebarHeight} 
 	style="height: calc(var(--polygon-featurebar-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonHeaderbarHeight} 
 	style="height: calc(var(--polygon-headerbar-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonMaxHeaderbarHeight} 
 	style="height: calc(var(--polygon-max-headerbar-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonNavigationHeight} 
 	style="height: calc(var(--polygon-navigation-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonBreakingnewsHeight} 
 	style="height: calc(var(--polygon-breakingnews-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonBlockTitleHeight} 
 	style="height: calc(var(--polygon-block-title-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonAdStickyOffset} 
 	style="height: calc(var(--polygon-ad-sticky-offset, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonZoneheaderHeight} 
 	style="height: calc(var(--polygon-zoneheader-height, 0px));"></div>
 
-<div class="polygon-view-height"
+<div class="duv-polygon-view-height"
 	bind:clientHeight={env.polygonSmallestViewportHeight} 
 	style="height: calc(var(--polygon-smallest-viewport-height, 100vh));"></div>
 
@@ -182,7 +182,7 @@
 		text-align: right;
 		min-width: 60px;
 	}
-	.polygon-view-height {
+	.duv-polygon-view-height {
 		position: absolute;
 		opacity: 0;
 	}
