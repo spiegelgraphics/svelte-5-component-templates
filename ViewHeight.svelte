@@ -69,73 +69,77 @@
 	// --polygon-headerbar-height: 80px oder 48px -> ist die Höhe der HeaderBar mit dem Burger und SPIEGEL-Logo
 </script>
 
-
-<div
-	class="duv-old-container"
-	bind:this={container}
-	></div>
+<div class="duv-polygon-vars"
+	data-headerbar-height
+>
 
 
-<div class="duv-polygon-view-height"	
-	bind:clientHeight={env.polygonContainerHeight}
-	style="height: calc( 100vh - 0px  	
-	- var(--polygon-navigation-height, 0px) 
-	- var(--polygon-breakingnews-height, 0px)
-	- var(--polygon-app-bottombar-height, 0px)
-	- var(--polygon-app-collapsible-header-height, 0px) );"
-	></div>
+	<div
+		class="duv-old-container"
+		bind:this={container}
+		></div>
 
 
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonAppCollapsibleHeaderHeight} 
-	style="height: calc(var(--polygon-app-collapsible-header-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonAppBottombarHeight} 
-	style="height: calc(var(--polygon-app-bottombar-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonAudioplayerHeight} 
-	style="height: calc(var(--polygon-audioplayer-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonFeaturebarHeight} 
-	style="height: calc(var(--polygon-featurebar-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonHeaderbarHeight} 
-	style="height: calc(var(--polygon-headerbar-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonMaxHeaderbarHeight} 
-	style="height: calc(var(--polygon-max-headerbar-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonNavigationHeight} 
-	style="height: calc(var(--polygon-navigation-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonBreakingnewsHeight} 
-	style="height: calc(var(--polygon-breakingnews-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonBlockTitleHeight} 
-	style="height: calc(var(--polygon-block-title-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonAdStickyOffset} 
-	style="height: calc(var(--polygon-ad-sticky-offset, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonZoneheaderHeight} 
-	style="height: calc(var(--polygon-zoneheader-height, 0px));"></div>
-
-<div class="duv-polygon-view-height"
-	bind:clientHeight={env.polygonSmallestViewportHeight} 
-	style="height: calc(var(--polygon-smallest-viewport-height, 100vh));"></div>
+	<div class="duv-polygon-view-height"	
+		bind:clientHeight={env.polygonContainerHeight}
+		style="height: calc( 100vh - 0px  	
+		- var(--polygon-navigation-height, 0px) 
+		- var(--polygon-breakingnews-height, 0px)
+		- var(--polygon-app-bottombar-height, 0px)
+		- var(--polygon-app-collapsible-header-height, 0px) );"
+		></div>
 
 
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonAppCollapsibleHeaderHeight} 
+		style="height: calc(var(--polygon-app-collapsible-header-height, 0px));"></div>
 
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonAppBottombarHeight} 
+		style="height: calc(var(--polygon-app-bottombar-height, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonAudioplayerHeight} 
+		style="height: calc(var(--polygon-audioplayer-height, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonFeaturebarHeight} 
+		style="height: calc(var(--polygon-featurebar-height, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonHeaderbarHeight} 
+		style="height: calc(var(--polygon-headerbar-height, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonMaxHeaderbarHeight} 
+		style="height: calc(var(--polygon-max-headerbar-height, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonNavigationHeight} 
+		style="height: calc(var(--polygon-navigation-height, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonBreakingnewsHeight} 
+		style="height: calc(var(--polygon-breakingnews-height, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonBlockTitleHeight} 
+		style="height: calc(var(--polygon-block-title-height, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonAdStickyOffset} 
+		style="height: calc(var(--polygon-ad-sticky-offset, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonZoneheaderHeight} 
+		style="height: calc(var(--polygon-zoneheader-height, 0px));"></div>
+
+	<div class="duv-polygon-view-height"
+		bind:clientHeight={env.polygonSmallestViewportHeight} 
+		style="height: calc(var(--polygon-smallest-viewport-height, 100vh));"></div>
+
+
+</div>
 
 
 
@@ -181,6 +185,11 @@
 		flex: 0 0 auto;
 		text-align: right;
 		min-width: 60px;
+	}
+	.duv-polygon-vars {		
+		width: 100%;
+		height: 0;
+		overflow: hidden;
 	}
 	.duv-polygon-view-height {
 		position: absolute;
