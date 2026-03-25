@@ -71,7 +71,7 @@
 
 
 <div
-	class="old-container"
+	class="duv-old-container"
 	bind:this={container}
 	></div>
 
@@ -186,7 +186,7 @@
 		position: absolute;
 		opacity: 0;
 	}
-	.old-container {
+	.duv-old-container {
 		width: 100%;
 		position: absolute;
 		z-index: 999999;
