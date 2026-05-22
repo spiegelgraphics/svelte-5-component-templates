@@ -42,7 +42,7 @@
     </span>
 </div>
 
-<style>
+<style lang="scss">
 
     .loader-path {
         stroke-dasharray: 126;
