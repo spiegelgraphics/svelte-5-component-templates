@@ -38,7 +38,7 @@
 	</span>
 </div>
 
-<style>
+<style lang="scss">
 	.loadingAni {
 		position: relative;
 		justify-content: center !important;
