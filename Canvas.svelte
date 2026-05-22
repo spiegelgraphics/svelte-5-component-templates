@@ -138,7 +138,7 @@
 />
 {@render children()}
 
-<style>
+<style lang="scss">
 	canvas {
 		position: var(--position, relative);
 		top: 0;
