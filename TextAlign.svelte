@@ -10,7 +10,7 @@
 	 *
 	 */
 
-	let { type = "iframe", disable, children } = $props();
+	let { type = "embed", disable, children } = $props();
 
 </script>
 
