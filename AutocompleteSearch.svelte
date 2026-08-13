@@ -1,24 +1,27 @@
 <script>
-	/**
+  /**
 	 * @component
 	 * AutocompleteSearch
-	 * 
-	 * A searchable dropdown component with autocomplete functionality that filters items in real-time
-   * that uses a virtual list to display a large number of items.
-	 * Supports keyboard navigation, custom styling, and optional search string persistence.
-	 * 
-	 * @prop {Array} items - The list of items to search through. Each item can have a `select_label` or will use the `itemLabelKey` property.
+	 *
+	 * A searchable dropdown component with autocomplete functionality that filters items in real-time,
+   * using a virtual list to render a large number of items efficiently.
+	 * Supports keyboard navigation and custom styling.
+	 *
+	 * @prop {Array} items - The list of items to search through.
    * @prop {String} selectLabel - Optional label displayed above the input field. Default: ''
-	 * @prop {Boolean} showSelectLabel - Show the label
-	 * @prop {String} key - The key in the item object to use as the id field.
-   * @prop {String} displayKey - The key in the item object to use as the display label.
-	 * @prop {String} placeholder - Placeholder text for the search input. Default: 'Suche ...'
-	 * @prop {Boolean} disableAutocomplete - If true, disables the input field and prevents interaction.
-	 * @prop {Boolean} keepSearchString - If true, retains the search string after selection. Default: true
-	 * @prop {Number} autocompleteBoxMaxHeight - Maximum height of the dropdown list in pixels (4 items without scrollbar). Default: 204
-	 * @prop {Object} selectedItem - The currently selected item. This is a bindable property that updates when an item is selected.
-   * @prop {String} layout - The control layout. Chose between "hero" and "regular". Default: "regular"
-	 * 
+	 * @prop {Boolean} showSelectLabel - Show the label. Default: true
+	 * @prop {String} key - The key in the item object used as the search/id field. If null, the item itself is used.
+   * @prop {String} displayKey - The key in the item object used as the display label. If null, the item itself is used.
+	 * @prop {String} placeholder - Placeholder text for the search input. Default: 'Suchen...'
+	 * @prop {Object} selectedItem - The currently selected item. Bindable, updates when an item is selected.
+	 * @prop {HTMLElement} textbox - The underlying search input element. Bindable.
+	 * @prop {Boolean} showSearchIcon - Show the search icon when the input is empty. Default: true
+	 * @prop {Boolean} showPaywall - Show a paywall notice instead of the suggestion list. Default: false
+	 * @prop {Function} onselect - Callback fired with `{ selectedItem }` whenever the selection changes.
+   * @prop {String} layout - The control layout. Choose between "hero" and "regular". Default: "regular"
+	 * @prop {Boolean} disableAutocomplete - If true, disables native browser autocomplete/autocorrect/spellcheck on the input.
+	 * @prop {Number} autocompleteBoxMaxHeight - Maximum height of the dropdown list in pixels. Default: 200
+	 *
 	 * />
 	 */
 
@@ -92,6 +95,8 @@
     }
     return items;
   });
+
+  let hasSuggestions = $derived(filteredList.length > 0);
 
   const handleKey = (e) => {
     if (e.key === 'Escape') {
@@ -167,6 +172,46 @@
     end = e.end;
   };
 
+  const getHighlightSegments = (label, query) => {
+    if (!query || !query.trim()) return [{ text: label, match: false }];
+
+    const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+    const lowerLabel = label.toLowerCase();
+
+    const ranges = [];
+    for (const word of words) {
+      let fromIndex = 0;
+      while (true) {
+        const found = lowerLabel.indexOf(word, fromIndex);
+        if (found === -1) break;
+        ranges.push([found, found + word.length]);
+        fromIndex = found + word.length;
+      }
+    }
+    if (ranges.length === 0) return [{ text: label, match: false }];
+
+    ranges.sort((a, b) => a[0] - b[0]);
+    const merged = [ranges[0]];
+    for (const range of ranges.slice(1)) {
+      const last = merged[merged.length - 1];
+      if (range[0] <= last[1]) {
+        last[1] = Math.max(last[1], range[1]);
+      } else {
+        merged.push(range);
+      }
+    }
+
+    const segments = [];
+    let pos = 0;
+    for (const [start, end] of merged) {
+      if (start > pos) segments.push({ text: label.slice(pos, start), match: false });
+      segments.push({ text: label.slice(start, end), match: true });
+      pos = end;
+    }
+    if (pos < label.length) segments.push({ text: label.slice(pos), match: false });
+    return segments;
+  };
+
   const handleClickOutside = () => {
     autocompleteVisible = false;
     textbox.blur();
@@ -209,7 +254,7 @@
 
 <!-- <svelte:options customElement="autocomplete-select" /> -->
 
-<div class="autocomplete-select" class:show-above={showAbove} class:hero={layout === 'hero'} use:clickOutside onclick_outside={handleClickOutside} bind:this={container}>
+<div class="autocomplete-select" class:show-above={showAbove} class:hero={layout === 'hero'} class:no-suggestions={!hasSuggestions} class:open={autocompleteVisible} use:clickOutside onclick_outside={handleClickOutside} bind:this={container}>
   {#if showSelectLabel && selectLabel}
     <div class="label">{selectLabel}</div>
   {/if}
@@ -217,12 +262,6 @@
     onclick={() => textbox.focus()}
     onkeydown={(e) => e.key === 'Enter' && textbox.focus()}
     role="none" tabindex="-1">
-    {#if showSearchIcon}
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="6" cy="6" r="5.35" stroke-width="1.3"/>
-        <path d="M10 10L14.5 14.5" stroke-width="1.3" stroke-linecap="round"/>
-      </svg>
-    {/if}
     {#if selectedItem && !searchInputHasFocus}
       <div class="selected-item">
         <span>{selectedItem.label}</span>
@@ -253,6 +292,12 @@
             <path d="M12.7441 13.7222L2.25295 3.23096M12.7441 3.23096L2.25295 13.7222" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
       </button>
+    {/if}
+    {#if showSearchIcon && !(selectedItem || searchString)}
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="6" cy="6" r="5.35" stroke-width="1.3"/>
+        <path d="M10 10L14.5 14.5" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
     {/if}
   </div>
 
@@ -288,14 +333,20 @@
         onVisibleRangeUpdate={handleListScroll}
         scrollToAlignment="start"
         scrollToBehaviour="smooth">
-        {#snippet vl_slot({index, item, size})}
+        {#snippet vl_slot({index, item})}
           <div class="list-item"
             role="option"
             tabindex="0"
             onmousedown={() => handleClick(item)}
             class:active={index == activeListIndex}
             aria-selected={index == activeListIndex}>
-            {item.label}
+            {#if layout === 'hero'}
+              {#each getHighlightSegments(item.label, searchString) as segment, i (i)}
+                {#if segment.match}<strong>{segment.text}</strong>{:else}{segment.text}{/if}
+              {/each}
+            {:else}
+              {item.label}
+            {/if}
           </div>
         {/snippet}
       </VirtualList>
@@ -481,15 +532,17 @@
     }
   }
 
-  $heroText: rgba(128, 126, 124, 1);
-  $heroTextDark: rgba(152, 150, 148, 1);
+  $heroText: rgba(0, 0, 0, 255);
+  $heroTextDark: rgba(241, 239, 237, 1);
+  $heroTextPlaceholder: rgba(128, 126, 124, 1);
+  $heroTextPlaceholderDark: rgba(152, 150, 148, 1);
   $heroBg: #F1EFED;
   $heroBgDark: #4C4C4C;
   $heroSelected: #E64415;
   $heroSelectedDark: #D63F11;
   $heroRadius: 1.5rem;
 
-  .hero {
+  .autocomplete-select.hero {
     .autocomplete-input {
       border-radius: $heroRadius;
       background: $heroBg;
@@ -502,7 +555,7 @@
         color: $heroText;
       }
       input[type=text]::placeholder {
-        color: $heroText;
+        color: $heroTextPlaceholder;
         opacity: 0.7;
       }
       svg.icon circle,
@@ -511,16 +564,32 @@
       }
     }
 
-    .autocomplete-input:has(input[type=text]:focus) {
-      border-color: transparent;
-      border-bottom: 1px solid transparent;
-      border-radius: $heroRadius $heroRadius 0 0;
+    &.open {
+      .autocomplete-input {
+        border-color: transparent;
+        border-bottom: 1px solid transparent;
+        border-radius: $heroRadius $heroRadius 0 0;
+      }
+      &.show-above .autocomplete-input {
+        border-color: transparent;
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        border-radius: 0 0 $heroRadius $heroRadius;
+      }
     }
-    &.show-above .autocomplete-input:has(input[type=text]:focus) {
-      border-color: transparent;
-      border-top: 1px solid transparent;
-      border-bottom: 1px solid transparent;
-      border-radius: 0 0 $heroRadius $heroRadius;
+
+    &.no-suggestions.open {
+      .autocomplete-input {
+        border-bottom: 1px solid transparent;
+        border-radius: $heroRadius;
+      }
+      &.show-above .autocomplete-input {
+        border-top: 1px solid transparent;
+        border-radius: $heroRadius;
+      }
+      .autocomplete-box.open:not(.paywall) {
+        display: none;
+      }
     }
 
     .autocomplete-box {
@@ -530,8 +599,12 @@
       overflow: hidden;
 
       .list-item {
-        font-weight: bold;
+        font-weight: normal;
         color: $heroText;
+
+        strong {
+          font-weight: bold;
+        }
       }
       .list-item:hover, .list-item.active {
         background-color: darken($heroBg, 5%);
@@ -559,7 +632,7 @@
         background: $heroBgDark;
         color: $heroTextDark;
         input[type=text] { color: $heroTextDark; }
-        input[type=text]::placeholder { color: $heroTextDark; }
+        input[type=text]::placeholder { color: $heroTextPlaceholderDark; }
         svg.icon circle, svg.icon path { stroke: $heroTextDark; }
       }
       .autocomplete-box {
